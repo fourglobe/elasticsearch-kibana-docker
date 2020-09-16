@@ -1,7 +1,7 @@
 # `Elasticsearch` + `Kibana`を`Docker Compose`で動かす
 
 ## 概要
-- `Docker Compose`を利用して、`Elasticsearch`を3ノード1クラスタ構成で起動させた
+- `Docker Compose`を利用して、`Elasticsearch`を~~3ノード1クラスタ構成で起動させた~~ single node startup
 - `Kibana`も立ち上げて、`Elasticsearch`と連携させた
 - `Docker Compose`の設定値について、自分の理解した内容をまとめた
 
@@ -9,20 +9,24 @@
 - 2020/06/07
   - Elasctic Stackのver.を`6.3.1`=>`7.7`へ変更
   - Docker Compose(Mac)のver.を`1.22.0`=>`1.25.5`で動作確認
+- 2020/09/16
+  - Elasticsearch version update 7.9.1
+  - Elasticsearch node change 3 -> single node
+  - add Filebeat (Comment out)
 
-## GitHub
+## GitHub (Origin)
 - https://github.com/sugikeitter/elasticsearch-kibana-docker
 
 ## 環境
-- Elasticsearch 7.7.1
-- Kibana 7.7.1
-- Docker Compose 1.25.5
+- Elasticsearch 7.9.1
+- Kibana 7.9.1
+<!-- - Docker Compose 1.25.5 -->
 
 ## 必要なファイル
 ```
 .
 ├── docker-compose.yml
-├── es
+├── elasticsearch
 │   ├── Dockerfile
 │   └── config
 │       ├── elasticsearch.yml  # 必要に応じて設定を追記する
@@ -40,8 +44,8 @@
 
 ```shell
 ## リポジトリをcloneして、docker-compose.ymlが配置されているディレクトリに移動
-$ git clone git@github.com:sugikeitter/elasticsearch-kibana-docker.git
-$ cd elasticsearch-kibana-docker
+# $ git clone git@github.com:sugikeitter/elasticsearch-kibana-docker.git
+# $ cd elasticsearch-kibana-docker
 
 ## docker-compose.ymlからDockerイメージをビルド
 $ docker-compose build
@@ -89,13 +93,15 @@ $ docker-compose up
   - 複数サービスをまたがってボリュームを利用
   - ホスト側へデータを永続化
 
-### port
+
+<!-- ### port
 - 公開するポートの設定
 - `HOST:CONTAINER`の順で設定
 - 今回は`es0*`はそれぞれポート`9200`を利用してプロセスを立ち上げているが、ホストマシン経由でコンテナへアクセスする場合に`localhost:920[1,2,3]`でそれぞれのコンテナの`Elasticsearch`へアクセスできるように設定している
   - `localhost:9201`->`es01:9200`
   - `localhost:9202`->`es02:9200`
-  - `localhost:9203`->`es03:9200`
+  - `localhost:9203`->`es03:9200` -->
+
 
 ### networks
 - `Docker Compose`の中でさらにネットワークを分けられる設定
